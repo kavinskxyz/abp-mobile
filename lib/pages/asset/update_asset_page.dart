@@ -9,15 +9,17 @@ import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 
 import '../../config/app_constant.dart';
+import '../../models/asset_model.dart';
 
-class CreateAssetPage extends StatefulWidget {
-  const CreateAssetPage({super.key});
+class UpdateAssetPage extends StatefulWidget {
+  const UpdateAssetPage({super.key, required this.oldAsset});
+  final AssetModel oldAsset;
 
   @override
-  State<CreateAssetPage> createState() => _CreateAssetPageState();
+  State<UpdateAssetPage> createState() => _UpdateAssetPageState();
 }
 
-class _CreateAssetPageState extends State<CreateAssetPage> {
+class _UpdateAssetPageState extends State<UpdateAssetPage> {
   final formkey = GlobalKey<FormState>();
   final edtName = TextEditingController();
   List<String> types = [
@@ -52,32 +54,28 @@ class _CreateAssetPageState extends State<CreateAssetPage> {
 
     // if valid, go on
 
-    // if not have image, stop/return
-    if (imageByte == null) {
-      DInfo.toastError('Image don\'t empty');
-      return;
-    }
-
-    // if have image, go on
     Uri url = Uri.parse(
-      'http://192.168.212.22/create.php',
+      'http://192.168.212.22/update.php',
     );
     try {
       final response = await http.post(url, body: {
+        'id': widget.oldAsset.id,
         'name': edtName.text,
         'type': type,
-        'image': imageName,
-        'base64code': base64Encode(imageByte as List<int>),
+        'old_image': widget.oldAsset.image,
+        'new_image': imageName ?? widget.oldAsset.image,
+        'new_base64code':
+            imageByte == null ? '' : base64Encode(imageByte as List<int>),
       });
       DMethod.printResponse(response);
 
       Map resBody = jsonDecode(response.body);
       bool success = resBody['success'] ?? false;
       if (success) {
-        DInfo.toastSuccess('Success Create New Asset');
+        DInfo.toastSuccess('Success Update Asset');
         Navigator.pop(context);
       } else {
-        DInfo.toastError('Failed Create New Asset');
+        DInfo.toastError('Failed Update Asset');
       }
     } catch (e) {
       DMethod.printTitle('catch', e.toString());
@@ -85,10 +83,17 @@ class _CreateAssetPageState extends State<CreateAssetPage> {
   }
 
   @override
+  void initState() {
+    edtName.text = widget.oldAsset.name;
+    type = widget.oldAsset.type;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Create New Asset'),
+        title: const Text('Update Asset'),
         centerTitle: true,
       ),
       body: Form(
@@ -152,7 +157,9 @@ class _CreateAssetPageState extends State<CreateAssetPage> {
                 padding: const EdgeInsets.all(16),
                 alignment: Alignment.center,
                 child: imageByte == null
-                    ? const Text('Empty')
+                    ? Image.network(
+                        'http://192.168.1.16/image/${widget.oldAsset.image}',
+                      )
                     : Image.memory(imageByte!),
               ),
             ),

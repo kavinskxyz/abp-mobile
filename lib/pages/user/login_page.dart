@@ -20,7 +20,7 @@ class LoginPage extends StatelessWidget {
     if (isValid == true) {
       // tervalidasi
       Uri url = Uri.parse(
-        'http://192.168.1.26/ABP_Mobile/user/login.php',
+        'http://192.168.212.22tugas_abp/abp/login.php',
       );
       http.post(url, body: {
         'username': edtUsername.text,
@@ -30,6 +30,7 @@ class LoginPage extends StatelessWidget {
         DMethod.printResponse(response);
 
         try {
+          print(response.body);
           // Map resBody = json.decode(response.body);
           if (msg == 't') {
             DInfo.toastSuccess('Login Success');
