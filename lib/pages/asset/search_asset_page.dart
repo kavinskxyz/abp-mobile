@@ -24,7 +24,7 @@ class _SearchAssetPageState extends State<SearchAssetPage> {
     assets.clear();
     setState(() {});
 
-    Uri url = Uri.parse('http://192.168.212.22/search.php');
+    Uri url = Uri.parse('${AppConstant.URL}/search.php');
     try {
       final response = await http.post(url, body: {
         'search': edtSearch.text,
