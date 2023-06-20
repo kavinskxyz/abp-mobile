@@ -26,13 +26,14 @@ class LoginPage extends StatelessWidget {
         'username': edtUsername.text,
         'password': edtPassword.text,
       }).then((response) {
-        final msg = response.body.toString().substring(29, 30);
+        // final msg = response.body.toString().substring(29, 30);
         DMethod.printResponse(response);
 
         try {
-          print(response.body);
-          // Map resBody = json.decode(response.body);
-          if (msg == 't') {
+          // print(response.body);
+          Map resBody = json.decode(response.body);
+          bool success = resBody['success'] ?? false;
+          if (success) {
             DInfo.toastSuccess('Login Success');
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => HomePage()));
