@@ -55,7 +55,7 @@ class _UpdateAssetPageState extends State<UpdateAssetPage> {
     // if valid, go on
 
     Uri url = Uri.parse(
-      'http://192.168.212.22/update.php',
+      '${AppConstant.URL}/update.php',
     );
     try {
       final response = await http.post(url, body: {

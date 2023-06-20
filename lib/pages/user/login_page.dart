@@ -20,7 +20,7 @@ class LoginPage extends StatelessWidget {
     if (isValid == true) {
       // tervalidasi
       Uri url = Uri.parse(
-        'http://192.168.212.22tugas_abp/abp/login.php',
+        '${AppConstant.URL}/login.php',
       );
       http.post(url, body: {
         'username': edtUsername.text,

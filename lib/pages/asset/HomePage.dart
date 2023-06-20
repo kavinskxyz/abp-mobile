@@ -26,7 +26,7 @@ class _HomePageState extends State<HomePage> {
     assets.clear();
     setState(() {});
 
-    Uri url = Uri.parse('http://192.168.1.16/read.php');
+    Uri url = Uri.parse('${AppConstant.URL}/read.php');
     try {
       final response = await http.get(url);
       DMethod.printResponse(response);
@@ -90,7 +90,7 @@ class _HomePageState extends State<HomePage> {
     );
     if (yes ?? false) {
       Uri url = Uri.parse(
-        'http://192.168.1.16/delete.php',
+        '${AppConstant.URL}/delete.php',
       );
       try {
         final response = await http.post(url, body: {
@@ -206,7 +206,7 @@ class _HomePageState extends State<HomePage> {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(8),
                             child: Image.network(
-                              'http://192.168.1.16/image/${item.image}',
+                              '${AppConstant.URL}/image/${item.image}',
                               fit: BoxFit.cover,
                               width: double.infinity,
                             ),

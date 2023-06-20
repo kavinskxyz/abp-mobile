@@ -60,7 +60,7 @@ class _CreateAssetPageState extends State<CreateAssetPage> {
 
     // if have image, go on
     Uri url = Uri.parse(
-      'http://192.168.212.22/create.php',
+      '${AppConstant.URL}/create.php',
     );
     try {
       final response = await http.post(url, body: {
